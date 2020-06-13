@@ -5,6 +5,7 @@
 <title>Mesero App</title>
 </head>
 <body>
+	<a class="btn btn-primary" th:href="@{/platos/form}">Nuevo</a>
 	<table class="table">
 		<thead>
 			<tr>
@@ -19,7 +20,15 @@
 				<td th:text="${p.nombre}"></td>
 				<td th:text="${p.precio}"></td>
 				<td th:text="${p.estado}"></td>
-				<td></td>
+				<td>
+					<a class="btn btn-primary"
+						th:href="@{/platos/form/} + ${p.id}">Editar</a>
+				</td>
+				<td>
+					<a class="btn btn-primary"
+						th:href="@{/platos/eliminar/} + ${p.id}"
+						onclick="return confirm('Estas seguro que deseas eliminar ?');">Eliminar</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>

@@ -1,5 +1,8 @@
 package com.dev.reactor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -7,8 +10,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dev.reactor.model.Persona;
+import com.dev.reactor.operador.creacion.Creacion;
 
 import io.reactivex.Observable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
@@ -18,12 +23,48 @@ public class DemoReactorApplication implements CommandLineRunner {
 	
 	public void reactor() {
 		Mono.just(new Persona(1, "Mito", 29))
-			.subscribe((p) -> logger.info("onNext: reactor -> {}", p));
+			.doOnNext((p) -> logger.info("doOnNext: Reactor -> {}", p))
+			.subscribe((p) -> logger.info("onNext: Reactor -> {}", p));
 	}
 	
 	public void rxJava2() {
 		Observable.just(new Persona(1, "Mito", 29))
-				.subscribe((p) -> logger.info("onNext: rxJava -> {}", p));
+				.doOnNext((p) -> {
+					logger.info("doOnNext: RxJava -> {}", p);
+				})
+				.subscribe((p) -> logger.info("onNext: RxJava -> {}", p));
+	}
+	
+	public void crearMono() {
+		Mono.just(new Persona(1, "Mito", 29))
+			.subscribe((p) -> { 
+				logger.info("onNext: Mono -> {}", p.toString());
+			});
+	}
+	
+	public void crearFlux() {
+		List<Persona> personas = new ArrayList<>();
+		personas.add(new Persona(1, "Mito", 27));
+		personas.add(new Persona(2, "Code", 28));
+		personas.add(new Persona(3, "Jaime", 29));
+		
+		Flux.fromIterable(personas)
+			.subscribe((p) -> {
+				logger.info("onNext: Flux -> {}", p.toString());
+			});
+	}
+	
+	public void fluxToMono() {
+		List<Persona> personas = new ArrayList<>();
+		personas.add(new Persona(1, "Mito", 27));
+		personas.add(new Persona(2, "Code", 28));
+		personas.add(new Persona(3, "Jaime", 29));
+		
+		Flux.fromIterable(personas)
+			.collectList()
+			.subscribe((lista) -> {
+				logger.info("onNext -> {}", lista.toString());
+			});
 	}
 	
 	public static void main(String[] args) {
@@ -34,5 +75,12 @@ public class DemoReactorApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		reactor();
 		rxJava2();
+		crearMono();
+		crearFlux();
+		fluxToMono();
+		
+		Creacion creacion = new Creacion();
+		creacion.range();
+		creacion.repeat();
 	}
 }
