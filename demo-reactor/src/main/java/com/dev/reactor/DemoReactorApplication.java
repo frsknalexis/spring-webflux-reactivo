@@ -10,7 +10,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dev.reactor.model.Persona;
+import com.dev.reactor.operador.combinacion.Combinacion;
+import com.dev.reactor.operador.condicional.Condicional;
 import com.dev.reactor.operador.creacion.Creacion;
+import com.dev.reactor.operador.error.ErrorOperador;
+import com.dev.reactor.operador.filtrado.Filtrado;
+import com.dev.reactor.operador.matematico.Matematico;
+import com.dev.reactor.operador.transformacion.Transformacion;
 
 import io.reactivex.Observable;
 import reactor.core.publisher.Flux;
@@ -82,5 +88,41 @@ public class DemoReactorApplication implements CommandLineRunner {
 		Creacion creacion = new Creacion();
 		creacion.range();
 		creacion.repeat();
+		
+		Transformacion transformacion = new Transformacion();
+		transformacion.methodMap();
+		transformacion.methodFlatMap();
+		transformacion.methodGroupBy();
+		
+		Filtrado filtrado = new Filtrado();
+		filtrado.filter();
+		filtrado.distinct();
+		filtrado.take();
+		filtrado.takeLast();
+		filtrado.skip();
+		filtrado.skipLast();
+		
+		Combinacion combinacion = new Combinacion();
+		combinacion.merge();
+		combinacion.zip();
+		combinacion.zipWith();
+		
+		ErrorOperador error = new ErrorOperador();
+		//error.retry();
+		error.onErrorReturn();
+		error.onErrorResume();
+		//error.onErrorMap();
+		
+		Condicional condicional = new Condicional();
+		condicional.defaultIfEmpty();
+		condicional.takeUntil();
+		condicional.timeout();
+		
+		Matematico matematico = new Matematico();
+		matematico.average();
+		matematico.count();
+		matematico.min();
+		matematico.sum();
+		matematico.summarizing();
 	}
 }
