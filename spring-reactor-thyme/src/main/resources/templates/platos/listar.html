@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Mesero App</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-	<a class="btn btn-primary" th:href="@{/platos/form}">Nuevo</a>
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">Nombre</th>
-				<th scope="col">Precio</th>
-				<th scope="col">Estado</th>
-				<th scope="col" colspan="2">Acciones</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="p : ${platos}">
-				<td th:text="${p.nombre}"></td>
-				<td th:text="${p.precio}"></td>
-				<td th:text="${p.estado}"></td>
-				<td>
-					<a class="btn btn-primary"
-						th:href="@{/platos/form/} + ${p.id}">Editar</a>
-				</td>
-				<td>
-					<a class="btn btn-primary"
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container">
+		<div class="alert alert-danger" th:if="${param.error != null}"
+			th:text="${param.error}"></div>
+		<div class="alert alert-success" th:if="${param.success != null}"
+			th:text="${param.success}"></div>
+
+		<h1 th:text="${titulo}"></h1>
+		<a class="btn btn-primary" th:href="@{/platos/form}">Nuevo</a>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Nombre</th>
+					<th scope="col">Precio</th>
+					<th scope="col">Estado</th>
+					<th scope="col" colspan="2">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${platos}">
+					<td th:text="${p.nombre}"></td>
+					<td th:text="${p.precio}"></td>
+					<td th:text="${p.estado}"></td>
+					<td><a class="btn btn-primary"
+						th:href="@{/platos/form/} + ${p.id}">Editar</a></td>
+					<td><a class="btn btn-primary"
 						th:href="@{/platos/eliminar/} + ${p.id}"
 						onclick="return confirm('Estas seguro que deseas eliminar ?');">Eliminar</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

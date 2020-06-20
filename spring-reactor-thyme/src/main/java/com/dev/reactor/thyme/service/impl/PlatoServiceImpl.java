@@ -4,15 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.dev.reactor.thyme.base.repository.BaseRepository;
+import com.dev.reactor.thyme.base.service.BaseServiceImpl;
 import com.dev.reactor.thyme.document.Plato;
 import com.dev.reactor.thyme.repository.PlatoRepository;
 import com.dev.reactor.thyme.service.PlatoService;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 @Service("platoService")
-public class PlatoServiceImpl implements PlatoService {
+public class PlatoServiceImpl extends BaseServiceImpl<Plato, String> implements PlatoService {
 
 	private final PlatoRepository platoRepository;
 	
@@ -21,31 +20,7 @@ public class PlatoServiceImpl implements PlatoService {
 	}
 	
 	@Override
-	public Mono<Plato> registrar(Plato plato) {
-		return platoRepository.save(plato);
+	protected BaseRepository<Plato, String> getRepository() {
+		return platoRepository;
 	}
-
-	@Override
-	public Mono<Plato> modificar(Plato plato) {
-		return platoRepository.save(plato);
-	}
-
-	@Override
-	public Flux<Plato> listar() {
-		return platoRepository.findAll();
-	}
-
-	@Override
-	public Mono<Plato> listarPorId(String id) {
-		return platoRepository.findById(id);
-	}
-
-	@Override
-	public Mono<Void> eliminar(String id) {
-		return platoRepository.findById(id)
-							.flatMap((p) -> {
-								return platoRepository.delete(p);
-							});
-	}
-
 }

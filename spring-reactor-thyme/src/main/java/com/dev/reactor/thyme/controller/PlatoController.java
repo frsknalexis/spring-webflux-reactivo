@@ -1,9 +1,12 @@
 package com.dev.reactor.thyme.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,10 +55,15 @@ public class PlatoController {
 	}
 	
 	@PostMapping("/operar")
-	public Mono<String> operar(Plato plato, SessionStatus status) {
+	public Mono<String> operar(@Valid Plato plato, BindingResult validations, SessionStatus status, Model model) {
+		if (validations.hasErrors()) {
+			validations.reject("ERR780", "Errores de validaciones de formulario");
+			model.addAttribute("titulo", "Errores en el formulario producto");
+			return Mono.just("platos/form");
+		}
 		status.setComplete();
 		return platoService.registrar(plato)
-						.then(Mono.just("redirect:/platos/listar"));
+						.then(Mono.just("redirect:/platos/listar?success=plato+guardado"));
 	}
 	
 	@GetMapping("/eliminar/{id}")

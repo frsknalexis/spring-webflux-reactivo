@@ -152,23 +152,41 @@ public class SpringReactorDemoApplication implements CommandLineRunner {
 			.subscribe((ex) -> logger.info(ex));
 	}
 	
+	public void backPressure() throws InterruptedException {
+		Flux<String> flux1 = Flux.interval(Duration.ofMillis(200))
+							.map((i) -> "[T]" + i)
+							.take(300);
+		Flux<String> fx2 = Flux.interval(Duration.ofMillis(200))
+							.map((i) -> "[F]" + i)
+							.take(300);
+		flux1.mergeWith(fx2)
+			.buffer(Duration.ofSeconds(2))
+			//.sample(Duration.ofSeconds(2))
+			.subscribe((s) -> {
+				logger.info("onNext: backPressure -> {}", s.toString());
+			});
+		
+		Thread.sleep(20000);
+	}
+	
 	@Override
 	public void run(String... args) throws Exception {
-		crearMono();
-		crearFlux();
-		methodDoOnNext();
-		methodMap();
-		methodFlatMap();
-		methodRange();
-		//methodDelayElement();
-		methodZipWith();
-		methodMergeWith();
-		methodMerge();
-		methodFilter();
-		methodTakeLast();
-		methodTake();
-		//methodDefaultIfEmpty();
-		methodOnErrorReturn();
-		methodRetry();
+//		crearMono();
+//		crearFlux();
+//		methodDoOnNext();
+//		methodMap();
+//		methodFlatMap();
+//		methodRange();
+//		//methodDelayElement();
+//		methodZipWith();
+//		methodMergeWith();
+//		methodMerge();
+//		methodFilter();
+//		methodTakeLast();
+//		methodTake();
+//		//methodDefaultIfEmpty();
+//		methodOnErrorReturn();
+//		methodRetry();
+		backPressure();
 	}
 }
