@@ -1,5 +1,9 @@
 package com.dev.reactor.thyme.base.service;
 
+import org.springframework.data.domain.Pageable;
+
+import com.dev.reactor.thyme.pagination.PageSupport;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -10,6 +14,8 @@ public interface BaseService<T, ID> {
 	Mono<T> modificar(T t);
 	
 	Flux<T> listar();
+	
+	Mono<PageSupport<T>> listarPageable(Pageable pageable);
 	
 	Mono<T> listarPorId(ID id);
 	

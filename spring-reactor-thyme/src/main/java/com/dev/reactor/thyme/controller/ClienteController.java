@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 
 import com.dev.reactor.thyme.document.Cliente;
 import com.dev.reactor.thyme.service.ClienteService;
@@ -123,13 +124,27 @@ public class ClienteController {
 	//CONTRAPRESION
 	@GetMapping("/listar/datadriver")
 	public Mono<String> listarDataDriver(Model model) {
+		final int CANTIDAD_ELEMENTOS_MOSTRAR  = 1;
+		Flux<Cliente> fluxClientes = clienteService.listarDemorado();
+		model.addAttribute("clientes", new ReactiveDataDriverContextVariable(fluxClientes, 
+										CANTIDAD_ELEMENTOS_MOSTRAR));
 		model.addAttribute("titulo", "Listado De Clientes [Data-Driver]");
 		return Mono.just("clientes/listar");
 	}
 	
 	@GetMapping("/listar/full")
 	public Mono<String> listarFull(Model model) {
+		Flux<Cliente> fluxClientes = clienteService.listarSobrecargado();
+		model.addAttribute("clientes", fluxClientes);
 		model.addAttribute("titulo", "Listado De Clientes [Full]");
 		return Mono.just("clientes/listar");
+	}
+	
+	@GetMapping("/listar/frag")
+	public Mono<String> listarFragmentado(Model model) {
+		Flux<Cliente> clientesFlux = clienteService.listarSobrecargado();
+		model.addAttribute("clientes", clientesFlux);
+		model.addAttribute("titulo", "Listado De Clientes [Full - Fragmentado]");
+		return Mono.just("clientes/listar-chunked");
 	}
 }
