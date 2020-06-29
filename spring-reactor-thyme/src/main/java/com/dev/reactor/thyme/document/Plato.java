@@ -32,17 +32,21 @@ public class Plato implements Serializable {
 	@Max(value = 100)
 	@Min(value = 1)
 	@Field(name = "precio")
-	private double precio;
+	private Double precio;
 	
 	@NotNull
 	@Field(name = "estado")
-	private boolean estado;
+	private Boolean estado;
 
 	public Plato() {
 		
 	}
+	
+	public Plato(String id) {
+		this.id = id;
+	}
 
-	public Plato(String id, String nombre, double precio, boolean estado) {
+	public Plato(String id, String nombre, Double precio, boolean estado) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -65,19 +69,19 @@ public class Plato implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public double getPrecio() {
+	public Double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(double precio) {
+	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
 
-	public boolean isEstado() {
+	public Boolean getEstado() {
 		return estado;
 	}
 
-	public void setEstado(boolean estado) {
+	public void setEstado(Boolean estado) {
 		this.estado = estado;
 	}
 }

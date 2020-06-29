@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -77,5 +79,11 @@ public class PlatoController {
 						.onErrorResume((ex) -> Mono.just("redirect:/platos/listar?error=Error+Interno"))
 						.onErrorReturn("redirect:/platos/listar?error=Error+Interno");
 		
+	}
+	
+	//Metodo utilizado para JQuery para la parte de autocomplete
+	@GetMapping(value = "/cargarplatos/{term}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Flux<Plato> buscarPorNombre(@PathVariable(value = "term") String term) {
+		return platoService.buscarPorNombre(term);
 	}
 }

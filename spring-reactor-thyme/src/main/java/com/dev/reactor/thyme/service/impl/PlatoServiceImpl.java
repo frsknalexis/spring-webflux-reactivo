@@ -10,6 +10,8 @@ import com.dev.reactor.thyme.document.Plato;
 import com.dev.reactor.thyme.repository.PlatoRepository;
 import com.dev.reactor.thyme.service.PlatoService;
 
+import reactor.core.publisher.Flux;
+
 @Service("platoService")
 public class PlatoServiceImpl extends BaseServiceImpl<Plato, String> implements PlatoService {
 
@@ -22,5 +24,10 @@ public class PlatoServiceImpl extends BaseServiceImpl<Plato, String> implements 
 	@Override
 	protected BaseRepository<Plato, String> getRepository() {
 		return platoRepository;
+	}
+
+	@Override
+	public Flux<Plato> buscarPorNombre(String term) {
+		return platoRepository.findByNombre(term);
 	}
 }

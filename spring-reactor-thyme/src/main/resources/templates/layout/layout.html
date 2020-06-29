@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 <meta charset="UTF-8">
 <title>Mesero - App - Restaurant</title>
@@ -64,13 +65,15 @@
 					<li class="dropdown show">
 						<a class="btn btn-outline-primary dropdown-toggle" href="#"
 							role="button" id="dropdownMenuLink" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false"> <span></span>
+							aria-haspopup="true" aria-expanded="false"> <span
+							sec:authentication="name"></span>
 						</a>
 						<div class="dropdown-menu">
 							<form id="logoutForm" th:action="@{/logout}" method="post">
-								<button class="dropdown-item" type="submit">
-									Cerrar <br> Sesion
-								</button>
+								<!-- <input type="hidden" name="_csrf" th:value="${_csrf.token}" /> --> 
+								<button class="dropdown-item"
+									onclick="document.getElementById('logoutForm').submit();"
+									type="submit">Cerrar <br> Sesion</button>
 							</form>
 						</div>
 					</li>
